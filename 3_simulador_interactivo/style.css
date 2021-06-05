@@ -1,0 +1,32 @@
+html{
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.login-container{
+    height: 400px;
+}
+
+input{
+    display: block;
+    padding: 5px;
+    margin: 5px;
+    width: 200px;
+}
+button{
+    margin: 20px 5px;
+    font-size: 1.5rem;
+    width: 214px;
+}
+
+#chart {
+    width: 650px;
+    margin: 35px auto;
+}

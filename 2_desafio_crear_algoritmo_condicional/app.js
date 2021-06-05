@@ -1,7 +1,7 @@
 function submit_datos() {
-    nombre = document.querySelector("#nombre").value;
-    apellido = document.querySelector("#apellido").value;
-    edad = document.querySelector("#edad").value;
+    var nombre = document.querySelector("#nombre").value;
+    var apellido = document.querySelector("#apellido").value;
+    var edad = document.querySelector("#edad").value;
 
     if (!DatosValidos(nombre, apellido, edad)) return;
 

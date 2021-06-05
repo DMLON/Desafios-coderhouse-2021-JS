@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link rel="stylesheet" href="style.css" />
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <script type="module">
+            import { submitDatos } from './app.js'
+            window.submitDatos = submitDatos;
+        </script>
+        <script src="./chart.js"></script>
+    </head>
+    <body>
+        <main>
+            <div class="container login-container">
+                <label for="nombre">Nombre</label>
+                <input
+                    id="nombre"
+                    type="text"
+                    placeholder="Ingrese su nombre"
+                />
+
+                <label for="apellido">Apellido</label>
+                <input
+                    id="apellido"
+                    type="text"
+                    placeholder="Ingrese su apellido"
+                />
+
+                <label for="edad">Edad</label>
+                <input id="edad" type="text" placeholder="Ingrese su edad" />
+
+                <label for="dinero">Dinero en cuenta</label>
+                <input id="dinero" type="text" placeholder="Monto a agregar" />
+
+                <button onclick="submitDatos()">Listo</button>
+            </div>
+
+            <div class="container">
+                <h2 id="price">Precio:</h2>
+                <div id="chart"></div>
+            </div>
+            
+        </main>
+    </body>
+</html>
