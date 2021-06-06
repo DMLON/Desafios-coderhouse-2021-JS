@@ -122,7 +122,7 @@ function validaAcciones(cantidad){
     var error = "";
     if (cantidad == "") error = "Por favor ingrese una cantidad a comprar/vender\n";
 
-    if (Number.isNaN(cantidad)) error = "Por favor ingrese una cantidad numérica\n";
+    if (Number.isNaN(cantidad) || cantidad <=0) error = "Por favor ingrese una cantidad numérica positiva\n";
 
     if (error!= "") {
         alert(error);
