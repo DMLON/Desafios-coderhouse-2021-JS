@@ -60,7 +60,7 @@ window.onload = () => {
         ],
         chart: {
             id: "realtime",
-            height: 350,
+            height: 400,
             type: "line",
             animations: {
                 enabled: true,
@@ -75,9 +75,10 @@ window.onload = () => {
             zoom: {
                 enabled: false,
             },
+            foreColor: 'black',
         },
         dataLabels: {
-            enabled: false,
+            enabled: true,
         },
         stroke: {
             curve: "smooth",
