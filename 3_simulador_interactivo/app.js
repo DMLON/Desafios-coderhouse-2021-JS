@@ -7,7 +7,7 @@ export function submitDatos() {
     var edad = Number(document.querySelector("#edad").value);
     var dinero = Number(document.querySelector("#dinero").value);
 
-    if (!datosValidos(nombre, apellido, edad, dinero)) return;
+    if (!datosPersonaValidos(nombre, apellido, edad, dinero)) return;
 
     //Creo la persona
     persona = new Persona(nombre, apellido, edad, dinero);
@@ -38,9 +38,19 @@ function showPersonInfo() {
     person_container.fadeIn("slow", () => {
         panel_compra_venta.removeClass("custom-hide").addClass("in");
     });
+
+    actualizarPortfolio();
 }
 
-function datosValidos(nombre, apellido, edad, dinero) {
+function actualizarPortfolio(){
+    var person_portfolio_pesos = $("#insumos-pesos");
+    person_portfolio_pesos.html(`$${persona.dinero}`);
+
+    var person_portfolio_pesos = $("#insumos-acciones");
+    person_portfolio_pesos.html(`${persona.acciones} FORT`);
+}
+
+function datosPersonaValidos(nombre, apellido, edad, dinero) {
     var error = "";
     if (nombre == "" || apellido == "" || edad == "" || dinero == "") error = "Por favor complete los siguientes datos:\n";
 
@@ -49,12 +59,12 @@ function datosValidos(nombre, apellido, edad, dinero) {
     if (edad == "") error += "\tEdad\n";
     if (dinero == "") error += "\tDinero\n";
 
-    if (Number.isNaN(edad)) {
-        error += "Ingrese edad como valor numérico.\n";
+    if (Number.isNaN(edad) || edad <= 0) {
+        error += "Ingrese edad como valor numérico positivo.\n";
     }
 
-    if (Number.isNaN(dinero)) {
-        error += "Ingrese dinero como valor numérico.";
+    if (Number.isNaN(dinero) || dinero <= 0) {
+        error += "Ingrese dinero como valor numérico positivo.";
     }
 
     if (error != "") {
@@ -64,10 +74,59 @@ function datosValidos(nombre, apellido, edad, dinero) {
     return true;
 }
 
-export function test_register(){
+export function testRegister(){
     //Creo la persona
     persona = new Persona("Test", "Person", "23", "10000");
 
     //Al crear la persona, escondo el login screen
     hideLoginScreen();
+}
+
+export function comprarAcciones(){
+    var cantidad = Number(document.querySelector('#comprar-cantidad').value)
+    if(!validaAcciones(cantidad)) return;
+
+    var precio = getPrecioActual();
+    if(Number.isNaN(precio) || precio == undefined){
+        alert("Error de conversión de precio, intente nuevamente.");
+        return;
+    } 
+
+    persona.comprarAcciones(precio,cantidad);
+
+    actualizarPortfolio();
+}
+
+export function venderAcciones(){
+    var cantidad = Number(document.querySelector('#vender-cantidad').value)
+    if(!validaAcciones(cantidad)) return;
+
+    var precio = getPrecioActual();
+    if(Number.isNaN(precio) || precio == undefined){
+        alert("Error de conversión de precio, intente nuevamente.");
+        return;
+    } 
+
+    persona.venderAcciones(precio,cantidad);
+
+    actualizarPortfolio();
+}
+
+function getPrecioActual(){
+    var precio = document.querySelector('#price').innerHTML
+    var precio = Number(precio.split('$')[1])
+    return precio;
+}
+
+function validaAcciones(cantidad){
+    var error = "";
+    if (cantidad == "") error = "Por favor ingrese una cantidad a comprar/vender\n";
+
+    if (Number.isNaN(cantidad)) error = "Por favor ingrese una cantidad numérica\n";
+
+    if (error!= "") {
+        alert(error);
+        return false;
+    }
+    return true;
 }
