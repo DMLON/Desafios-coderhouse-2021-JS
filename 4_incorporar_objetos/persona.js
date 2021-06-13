@@ -10,17 +10,32 @@ export class Persona {
     comprarAcciones(precio, cantidad, nombre_accion) {
         if (this.dinero >= precio * cantidad) {
             this.dinero -= precio * cantidad;
-            this.acciones.find(x=>x.nombre == nombre_accion)
-            this.acciones[nombre_accion] += cantidad;
+            const accion = this.acciones.find(x=>x.nombre == nombre_accion)
+            if(accion == null){
+                //Si es null, la agrego
+                this.acciones.push({
+                    nombre: nombre_accion,
+                    cantidad: cantidad
+                });
+            }else{
+                accion.cantidad += cantidad;
+            }
+            
         } else {
             alert("No tenés suficiente dinero!");
         }
     }
 
     venderAcciones(precio, cantidad, nombre_accion) {
-        if(this.acciones >= cantidad){
+        const accion = this.acciones.find(x=>x.nombre == nombre_accion)
+        if(accion == null){
+            alert("No tenés suficientes acciones!");
+            return;
+        }
+
+        if(accion.cantidad >= cantidad){
             this.dinero += precio * cantidad;
-            this.acciones -= cantidad;
+            accion.cantidad -= cantidad;
         }
         else {
             alert("No tenés suficientes acciones!");

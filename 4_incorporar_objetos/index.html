@@ -10,13 +10,7 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <link rel="stylesheet" href="style.css" />
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-        <script type="module">
-            import { submitDatos, testRegister, comprarAcciones, venderAcciones } from "./app.js";
-            window.submitDatos = submitDatos;
-            window.testRegister = testRegister;
-            window.comprarAcciones = comprarAcciones;
-            window.venderAcciones = venderAcciones;
-        </script>
+        <script type="module" src="./app.js"></script>
     </head>
     <body>
         <main>
@@ -90,9 +84,9 @@
                                             <div class="col-md-6">
                                                 <p class="ml-3">Acciones:</p>
                                             </div>
-                                            <div class="col-md-6">
-                                                <p id="insumos-acciones">0 FORT</p>
-                                            </div>
+                                        </div>
+                                        <div id="insumos-acciones">
+                                            
                                         </div>
                                     </div>
                                 </div>

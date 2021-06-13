@@ -1,11 +1,14 @@
+import { Accion } from "./accion.js";
 import { Persona } from "./persona.js";
 
 var persona = null;
+const Acciones = [];
+
 export function submitDatos() {
-    var nombre = document.querySelector("#nombre").value;
-    var apellido = document.querySelector("#apellido").value;
-    var edad = Number(document.querySelector("#edad").value);
-    var dinero = Number(document.querySelector("#dinero").value);
+    let nombre = document.querySelector("#nombre").value;
+    let apellido = document.querySelector("#apellido").value;
+    let edad = Number(document.querySelector("#edad").value);
+    let dinero = Number(document.querySelector("#dinero").value);
 
     if (!datosPersonaValidos(nombre, apellido, edad, dinero)) return;
 
@@ -17,7 +20,7 @@ export function submitDatos() {
 }
 
 function hideLoginScreen() {
-    var login_container = $("#login-container");
+    let login_container = $("#login-container");
 
     login_container.fadeOut("slow", () => {
         showPersonInfo();
@@ -26,9 +29,9 @@ function hideLoginScreen() {
 
 function showPersonInfo() {
     //Primero muestro el welcome title
-    var welcome_title = $("#welcome-title");
-    var panel_compra_venta = $("#panel-compra-venta");
-    var person_container = $("#person-container");
+    let welcome_title = $("#welcome-title");
+    let panel_compra_venta = $("#panel-compra-venta");
+    let person_container = $("#person-container");
 
     welcome_title.html(`Bienvenido ${persona.nombre} ${persona.apellido}!`);
 
@@ -43,11 +46,25 @@ function showPersonInfo() {
 }
 
 function actualizarPortfolio(){
-    var person_portfolio_pesos = $("#insumos-pesos");
+    let person_portfolio_pesos = $("#insumos-pesos");
     person_portfolio_pesos.html(`$${persona.dinero}`);
 
-    var person_portfolio_pesos = $("#insumos-acciones");
-    person_portfolio_pesos.html(`${persona.acciones} FORT`);
+    let person_portfolio_acciones = $("#insumos-acciones");
+
+    persona.acciones.map((accion)=>{
+        const accion_html = $(`#insumos-acciones-${accion.nombre}`);
+        if (!accion_html.length)
+            person_portfolio_acciones.append(agregarAccion(accion.nombre,accion.cantidad));
+        else {
+            accion_html.html(`${accion.cantidad} ${accion.nombre}`)
+        }
+    });
+
+    
+}
+
+function agregarAccion(nombreAccion,cantidad){
+    return `<div class="row"><div class="col-md-6"></div><div class="col-md-6"><p id="insumos-acciones-${nombreAccion}">${cantidad} ${nombreAccion}</p></div></div>`
 }
 
 function datosPersonaValidos(nombre, apellido, edad, dinero) {
@@ -80,46 +97,47 @@ export function testRegister(){
 
     //Al crear la persona, escondo el login screen
     hideLoginScreen();
+    
 }
 
 export function comprarAcciones(){
-    var cantidad = Number(document.querySelector('#comprar-cantidad').value)
+    let cantidad = Number(document.querySelector('#comprar-cantidad').value)
     if(!validaAcciones(cantidad)) return;
 
-    var precio = getPrecioActual();
+    let precio = getPrecioActual();
     if(Number.isNaN(precio) || precio == undefined){
         alert("Error de conversión de precio, intente nuevamente.");
         return;
     } 
 
-    persona.comprarAcciones(precio,cantidad);
+    persona.comprarAcciones(precio,cantidad,'FORT');
 
     actualizarPortfolio();
 }
 
 export function venderAcciones(){
-    var cantidad = Number(document.querySelector('#vender-cantidad').value)
+    let cantidad = Number(document.querySelector('#vender-cantidad').value)
     if(!validaAcciones(cantidad)) return;
 
-    var precio = getPrecioActual();
+    let precio = getPrecioActual();
     if(Number.isNaN(precio) || precio == undefined){
         alert("Error de conversión de precio, intente nuevamente.");
         return;
     } 
 
-    persona.venderAcciones(precio,cantidad);
+    persona.venderAcciones(precio,cantidad,'FORT');
 
     actualizarPortfolio();
 }
 
 function getPrecioActual(){
-    var precio = document.querySelector('#price').innerHTML
-    var precio = Number(precio.split('$')[1])
+    let precio = document.querySelector('#price').innerHTML
+    precio = Number(precio.split('$')[1])
     return precio;
 }
 
 function validaAcciones(cantidad){
-    var error = "";
+    let error = "";
     if (cantidad == "") error = "Por favor ingrese una cantidad a comprar/vender\n";
 
     if (Number.isNaN(cantidad) || cantidad <=0) error = "Por favor ingrese una cantidad numérica positiva\n";
@@ -130,3 +148,13 @@ function validaAcciones(cantidad){
     }
     return true;
 }
+
+
+window.submitDatos = submitDatos;
+window.testRegister = testRegister;
+window.comprarAcciones = comprarAcciones;
+window.venderAcciones = venderAcciones;
+
+window.onload = () => {
+    Acciones.push(new Accion("FORT",'chart'));
+};

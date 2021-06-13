@@ -1,5 +1,5 @@
 export class Chart_Accion {
-    constructor(accion_asociada,chartId){
+    constructor(accion_asociada, chartId){
         this.accion_asociada = accion_asociada;
         this.chart = undefined;
         this.chartId = chartId;
@@ -9,7 +9,7 @@ export class Chart_Accion {
         var options = {
             series: [
                 {
-                    data: accion_asociada.precios.slice(),
+                    data: this.accion_asociada._precios.slice(),
                 },
             ],
             chart: {
@@ -38,7 +38,7 @@ export class Chart_Accion {
                 curve: "smooth",
             },
             title: {
-                text: `Acciones ${accion_asociada.nombre}/PESO`,
+                text: `Acciones ${this.accion_asociada.nombre}/PESO`,
                 align: "left",
             },
             markers: {
@@ -46,7 +46,7 @@ export class Chart_Accion {
             },
             xaxis: {
                 type: "datetime",
-                range: accion_asociada._XAXISRANGE,
+                range: this.accion_asociada._XAXISRANGE,
             },
             yaxis: {
                 max: 200,
@@ -56,7 +56,7 @@ export class Chart_Accion {
             },
         };
     
-        this.chartchart = new ApexCharts(document.querySelector(`#${chartId}`), options);
-        this.chartchart.render();
+        this.chart = new ApexCharts(document.querySelector(`#${this.chartId}`), options);
+        this.chart.render();
     }
 }

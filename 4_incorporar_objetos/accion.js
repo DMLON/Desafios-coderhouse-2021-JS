@@ -1,4 +1,4 @@
-import { Chart_Accion } from "./chart";
+import { Chart_Accion } from "./chart.js";
 
 export class Accion {
     constructor(nombre, chartId, updateTime = 1000) {
@@ -7,7 +7,7 @@ export class Accion {
 
         this._updateTime = updateTime;
 
-        this._lastDate = 0;
+        this._lastDate = new Date("11 Feb 2021 GMT").getTime();
         this._precios = [];
         this._TICKINTERVAL = 24 * 60 * 60 * 1000;
         this._XAXISRANGE = 9* 24 * 60 * 60 * 1000;
@@ -52,12 +52,12 @@ export class Accion {
                 y,
             });
             this._lastDate = baseval;
-            baseval += TICKINTERVAL;
+            baseval += this._TICKINTERVAL;
             i++;
         }
     }
     
-    _clearInterval(){
+    clearInterval(){
         window.clearInterval(this.intervalId)
         this.intervalId = undefined;
     }
@@ -66,34 +66,35 @@ export class Accion {
     startInterval() {
         //Si invervalID es distinto de null significa que ya setee el intervalo
         if (this.intervalId != null) return;
-
-        this._getDayWiseTimeSeries(new Date("11 Feb 2021 GMT").getTime(), 10, {
+        
+        this._getDayWiseTimeSeries(this._lastDate, 10, {
             min: 10,
             max: 200,
         });
 
+        var self = this;
         this._intervalId = window.setInterval(function () {
-            getNewSeries(this.lastDate, {
+            self._getNewSeries(self._lastDate, {
                 min: 10,
                 max: 200,
             });
 
-            if(associated_chart != null){
-                this.associated_chart.updateSeries([
+            if(self._associated_chart != null){
+                self._associated_chart.chart.updateSeries([
                     {
-                        data: data,
+                        data: self._precios,
                     },
                 ]);
             }
 
-            this.currentPrice = this.data.slice(-1)[0].y;
-            document.querySelector('#price').innerHTML = `Precio: $${currentPrice}`;
+            self.currentPrice = self._precios.slice(-1)[0].y;
+            document.querySelector('#price').innerHTML = `Precio: $${self.currentPrice}`;
         }, this._updateTime);
     }
 
     _resetData() {
         // Alternatively, you can also reset the data at certain intervals to prevent creating a huge series
-        data = data.slice(data.length - 10, data.length);
+        this._precios = this._precios.slice(this._precios.length - 10, this._precios.length);
     }
 }
 
