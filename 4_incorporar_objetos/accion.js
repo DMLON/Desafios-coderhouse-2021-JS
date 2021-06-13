@@ -1,0 +1,99 @@
+import { Chart_Accion } from "./chart";
+
+export class Accion {
+    constructor(nombre, chartId, updateTime = 1000) {
+        this.nombre = nombre;
+        this.currentPrice = 0;
+
+        this._updateTime = updateTime;
+
+        this._lastDate = 0;
+        this._precios = [];
+        this._TICKINTERVAL = 24 * 60 * 60 * 1000;
+        this._XAXISRANGE = 9* 24 * 60 * 60 * 1000;
+
+        this._intervalId = undefined;
+
+        this._associated_chart = new Chart_Accion(this,chartId);
+        this._associated_chart.buildChart();
+        this.startInterval();
+    }
+
+    _getNewSeries(baseval, yrange) {
+        var newDate = baseval + this._TICKINTERVAL;
+        this._lastDate = newDate;
+    
+        for (var i = 0; i < this._precios.length - 10; i++) {
+            // IMPORTANT
+            // we reset the x and y of the data which is out of drawing area
+            // to prevent memory leaks
+            this._precios[i].x = newDate - this._XAXISRANGE - this._TICKINTERVAL;
+            this._precios[i].y = 0;
+        }
+    
+        this._precios.push({
+            x: newDate,
+            y:
+                Math.floor(Math.random() * (yrange.max - yrange.min + 1)) +
+                yrange.min,
+        });
+    }
+
+    _getDayWiseTimeSeries(baseval, count, yrange) {
+        var i = 0;
+        while (i < count) {
+            var x = baseval;
+            var y =
+                Math.floor(Math.random() * (yrange.max - yrange.min + 1)) +
+                yrange.min;
+    
+                this._precios.push({
+                x,
+                y,
+            });
+            this._lastDate = baseval;
+            baseval += TICKINTERVAL;
+            i++;
+        }
+    }
+    
+    _clearInterval(){
+        window.clearInterval(this.intervalId)
+        this.intervalId = undefined;
+    }
+
+
+    startInterval() {
+        //Si invervalID es distinto de null significa que ya setee el intervalo
+        if (this.intervalId != null) return;
+
+        this._getDayWiseTimeSeries(new Date("11 Feb 2021 GMT").getTime(), 10, {
+            min: 10,
+            max: 200,
+        });
+
+        this._intervalId = window.setInterval(function () {
+            getNewSeries(this.lastDate, {
+                min: 10,
+                max: 200,
+            });
+
+            if(associated_chart != null){
+                this.associated_chart.updateSeries([
+                    {
+                        data: data,
+                    },
+                ]);
+            }
+
+            this.currentPrice = this.data.slice(-1)[0].y;
+            document.querySelector('#price').innerHTML = `Precio: $${currentPrice}`;
+        }, this._updateTime);
+    }
+
+    _resetData() {
+        // Alternatively, you can also reset the data at certain intervals to prevent creating a huge series
+        data = data.slice(data.length - 10, data.length);
+    }
+}
+
