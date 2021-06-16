@@ -1,9 +1,12 @@
 import { Chart_Accion } from "./chart.js";
 
 export class Accion {
-    constructor(nombre, chartId, updateTime = 1000) {
+    constructor(nombre, chartId, minVal,maxVal, updateTime = 1000) {
         this.nombre = nombre;
         this.currentPrice = 0;
+
+        this.minVal = minVal;
+        this.maxVal = maxVal;
 
         this._updateTime = updateTime;
 
@@ -67,16 +70,18 @@ export class Accion {
         //Si invervalID es distinto de null significa que ya setee el intervalo
         if (this.intervalId != null) return;
         
+        //Necesario declarar self si voy a usarlo dentro de otro ambito (En este caso el de setInterval)
+        const self = this;
         this._getDayWiseTimeSeries(this._lastDate, 10, {
-            min: 10,
-            max: 200,
+            min: this.minVal,
+            max: this.maxVal,
         });
 
-        var self = this;
+        
         this._intervalId = window.setInterval(function () {
             self._getNewSeries(self._lastDate, {
-                min: 10,
-                max: 200,
+                min: self.minVal,
+                max: self.maxVal,
             });
 
             if(self._associated_chart != null){

@@ -5,9 +5,9 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Document</title>
-        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <link href="./bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
+        <script src="./bootstrap.min.js"></script>
+        <script src="./jquery.min.js"></script>
         <link rel="stylesheet" href="style.css" />
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
         <script type="module" src="./app.js"></script>
@@ -53,7 +53,7 @@
                                             <label for="comprar-cantidad">Cantidad a comprar</label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
-                                                    <button class="btn btn-success" style="width: 100px;" onclick="comprarAcciones()">Comprar</button>
+                                                    <button class="btn btn-success btn__100px" onclick="comprarAcciones()">Comprar</button>
                                                 </div>
                                                 <input id="comprar-cantidad" class="form-control" type="text" placeholder="Comprar" />
                                                 <!-- input-group -->
@@ -63,7 +63,13 @@
                                             <label for="vender-cantidad">Cantidad a vender</label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
-                                                    <button class="btn btn-danger" style="width: 100px;" onclick="venderAcciones()">Vender</button>
+                                                    <button
+                                                        class="btn btn-danger btn__100px"
+                                                        style="width: 100px"
+                                                        onclick="venderAcciones()"
+                                                    >
+                                                        Vender
+                                                    </button>
                                                 </div>
                                                 <input id="vender-cantidad" class="form-control" type="text" placeholder="Vender" />
                                                 <!-- input-group -->
@@ -74,7 +80,7 @@
                                         <h3>Portfolio</h3>
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <p class="ml-3">Pesos: </p>
+                                                <p class="ml-3">Pesos:</p>
                                             </div>
                                             <div class="col-md-6">
                                                 <p id="insumos-pesos">$0</p>
@@ -85,9 +91,7 @@
                                                 <p class="ml-3">Acciones:</p>
                                             </div>
                                         </div>
-                                        <div id="insumos-acciones">
-                                            
-                                        </div>
+                                        <div id="insumos-acciones"></div>
                                     </div>
                                 </div>
                             </article>
@@ -96,7 +100,17 @@
                 </div>
             </div>
 
-            <div class="container chart-container">
+            <div id="token-selector-container">
+                <div class="container">
+                    <div class="d-flex flex-wrap justify-content-center">
+                        <button class="btn btn-success btn__100px btn__token m-3">FORT</button>
+                        <button class="btn btn-success btn__100px btn__token m-3">FART</button>
+                        <button class="btn btn-success btn__100px btn__token m-3">POTAT</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="chart-container" class="container chart-container">
                 <h2 id="price">Precio:</h2>
                 <div id="chart"></div>
             </div>
