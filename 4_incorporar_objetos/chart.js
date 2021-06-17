@@ -1,8 +1,10 @@
 export class Chart_Accion {
-    constructor(accion_asociada, chartId){
+    constructor(accion_asociada, chartId, minVal, maxVal){
         this.accion_asociada = accion_asociada;
         this.chart = undefined;
         this.chartId = chartId;
+        this.maxVal = maxVal;
+        this.minVal = minVal;
     }
 
     buildChart(){
@@ -49,7 +51,7 @@ export class Chart_Accion {
                 range: this.accion_asociada._XAXISRANGE,
             },
             yaxis: {
-                max: 200,
+                max: this.maxVal,
             },
             legend: {
                 show: false,

@@ -1,10 +1,11 @@
 import { Chart_Accion } from "./chart.js";
 
 export class Accion {
-    constructor(nombre, chartId, minVal,maxVal, updateTime = 1000) {
+    constructor(nombre, chart_container,button_container,minVal,maxVal, updateTime = 1000) {
         this.nombre = nombre;
         this.currentPrice = 0;
-
+        this.chart_container = $(`#${chart_container}`);
+        this.button_container = $(`#${button_container}`);
         this.minVal = minVal;
         this.maxVal = maxVal;
 
@@ -16,8 +17,17 @@ export class Accion {
         this._XAXISRANGE = 9* 24 * 60 * 60 * 1000;
 
         this._intervalId = undefined;
+        
+        //Genero el elemento del chart
+        const button_token = $(`<button id="change_token_${nombre}" class="btn btn-success btn__100px btn__token m-3">${nombre}</button>`);
+        button_token.on('click',()=>{
+            $('div[id $= "_chart_price"]').removeClass("in").addClass("custom-hide fade");
+            $(`#${this.nombre}_chart_price`).removeClass("custom-hide").addClass("in");
+        });
+        this.button_container.append(button_token)
 
-        this._associated_chart = new Chart_Accion(this,chartId);
+        this.chart_container.append(`<div id="${nombre}_chart_price"><h2 id="price_${nombre}">Precio:</h2><div id="chart_${nombre}"></div></div>`);
+        this._associated_chart = new Chart_Accion(this,`chart_${nombre}`,minVal,maxVal);
         this._associated_chart.buildChart();
         this.startInterval();
     }
@@ -93,7 +103,7 @@ export class Accion {
             }
 
             self.currentPrice = self._precios.slice(-1)[0].y;
-            document.querySelector('#price').innerHTML = `Precio: $${self.currentPrice}`;
+            document.querySelector(`#price_${self.nombre}`).innerHTML = `Precio: $${self.currentPrice}`;
         }, this._updateTime);
     }
 

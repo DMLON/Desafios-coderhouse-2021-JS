@@ -156,5 +156,7 @@ window.comprarAcciones = comprarAcciones;
 window.venderAcciones = venderAcciones;
 
 window.onload = () => {
-    Acciones.push(new Accion("FORT",'chart',10,200));
+    Acciones.push(new Accion("FORT",'chart-container','token-selector-container',10,200));
+    Acciones.push(new Accion("FART",'chart-container','token-selector-container',3000,5000));
+    Acciones.push(new Accion("POTAT",'chart-container','token-selector-container',2,5));
 };
