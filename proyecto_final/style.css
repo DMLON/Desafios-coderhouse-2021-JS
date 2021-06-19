@@ -1,0 +1,31 @@
+/* .body {
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+        "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    background-color: rgb(34, 37, 41);
+    color: white;
+} */
+
+.smooth-transitions{
+    transition: opacity 1s;
+}
+
+.custom-hide {
+    height:0;
+}
+
+.fade.in {
+    opacity: 1;
+}
+
+.shown{
+    visibility: visible;
+    opacity: 1;
+}
+
+.btn__100px{
+    width: 100px;
+}
+
+.btn__token{
+    z-index: 1;
+}

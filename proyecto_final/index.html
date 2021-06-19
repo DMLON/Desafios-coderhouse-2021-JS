@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="./jquery.min.js"></script>
+        <link href="./bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
+        <script src="./popper.min.js"></script>
+        <script src="./bootstrap.min.js"></script>
+        <link rel="stylesheet" href="style.css" />
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <script type="module" src="./app.js"></script>
+    </head>
+    <body>
+        <main>
+            <button style="position: fixed; top: 0; left: 0" onclick="testRegister()">Test</button>
+            <div class="container">
+                <div class="row justify-content-md-center mt-3">
+                    <div class="col col-lg-6">
+                        <div class="card" id="login-container">
+                            <div class="card-header">
+                                <h3>Simluador de acciones</h3>
+                            </div>
+                            <article class="card-body">
+                                <h4 class="card-title mb-4 mt-1">Registrate</h4>
+                                <div class="form-group">
+                                    <label for="nombre">Nombre</label>
+                                    <input id="nombre" class="form-control" type="text" placeholder="Ingrese su nombre" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="apellido">Apellido</label>
+                                    <input id="apellido" class="form-control" type="text" placeholder="Ingrese su apellido" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="edad">Edad</label>
+                                    <input id="edad" class="form-control" type="text" placeholder="Ingrese su edad" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="dinero">Dinero en cuenta</label>
+                                    <input id="dinero" class="form-control" type="text" placeholder="Monto a agregar" />
+                                </div>
+                                <button class="btn btn-primary btn-block" onclick="submitDatos()">Registrarse</button>
+                            </article>
+                        </div>
+                        <div class="card fade custom-hide" id="person-container">
+                            <article class="card-body">
+                                <div id="person-container">
+                                    <!-- Titulo -->
+                                    <h2 class="card-title mb-4 mt-1" id="welcome-title"></h2>
+                                    <div class="fade custom-hide" id="panel-compra-venta">
+                                        <div class="form-group">
+                                            <label for="comprar-cantidad">Cantidad a comprar</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <button class="btn btn-success btn__100px" onclick="comprarAcciones()">Comprar</button>
+                                                </div>
+                                                <input id="comprar-cantidad" class="form-control" type="text" placeholder="Comprar" />
+                                                <!-- input-group -->
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="vender-cantidad">Cantidad a vender</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <button
+                                                        class="btn btn-danger btn__100px"
+                                                        style="width: 100px"
+                                                        onclick="venderAcciones()"
+                                                    >
+                                                        Vender
+                                                    </button>
+                                                </div>
+                                                <input id="vender-cantidad" class="form-control" type="text" placeholder="Vender" />
+                                                <!-- input-group -->
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="acciones-select">Acción a intercambiar</label>
+                                            <select class="form-control" id="acciones-select">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <h3>Portfolio</h3>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p class="ml-3">Pesos:</p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p id="insumos-pesos">$0</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p class="ml-3">Acciones:</p>
+                                            </div>
+                                        </div>
+                                        <div id="insumos-acciones"></div>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div id="token-selector-container" class="d-flex flex-wrap justify-content-center">
+                </div>
+            </div>
+
+
+            <div id="chart-container" class="container chart-container">
+            </div>
+        </main>
+    </body>
+</html>
