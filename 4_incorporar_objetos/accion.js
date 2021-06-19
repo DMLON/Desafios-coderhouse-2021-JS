@@ -1,7 +1,7 @@
 import { Chart_Accion } from "./chart.js";
 
 export class Accion {
-    constructor(nombre, chart_container,button_container,minVal,maxVal, updateTime = 1000) {
+    constructor(nombre, chart_container,button_container,option_container,minVal,maxVal, updateTime = 1000) {
         this.nombre = nombre;
         this.currentPrice = 0;
         this.chart_container = $(`#${chart_container}`);
@@ -18,14 +18,18 @@ export class Accion {
 
         this._intervalId = undefined;
         
-        //Genero el elemento del chart
+        //Le asigno al button container un boton para la accion nueva
         const button_token = $(`<button id="change_token_${nombre}" class="btn btn-success btn__100px btn__token m-3">${nombre}</button>`);
         button_token.on('click',()=>{
             $('div[id $= "_chart_price"]').removeClass("in").addClass("custom-hide fade");
             $(`#${this.nombre}_chart_price`).removeClass("custom-hide").addClass("in");
         });
-        this.button_container.append(button_token)
+        this.button_container.append(button_token);
 
+        this.option_container = $(`#${option_container}`);
+        this.option_container.append(`<option>${nombre}/PESO</option>`);
+
+        //Creo el chart asociado a la accion
         this.chart_container.append(`<div id="${nombre}_chart_price"><h2 id="price_${nombre}">Precio:</h2><div id="chart_${nombre}"></div></div>`);
         this._associated_chart = new Chart_Accion(this,`chart_${nombre}`,minVal,maxVal);
         this._associated_chart.buildChart();
@@ -52,6 +56,7 @@ export class Accion {
         });
     }
 
+    //Permite obtener el valor temporal y eje y random para el proximo valor
     _getDayWiseTimeSeries(baseval, count, yrange) {
         var i = 0;
         while (i < count) {
@@ -70,12 +75,13 @@ export class Accion {
         }
     }
     
+    //Limpia el intervalo
     clearInterval(){
         window.clearInterval(this.intervalId)
         this.intervalId = undefined;
     }
 
-
+    //Empieza la variacion de vlaores para el grafico de acciones
     startInterval() {
         //Si invervalID es distinto de null significa que ya setee el intervalo
         if (this.intervalId != null) return;

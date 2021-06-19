@@ -1,9 +1,14 @@
 import { Accion } from "./accion.js";
 import { Persona } from "./persona.js";
+import { createModalAndShow } from "./modalUtils.js";
 
 var persona = null;
+let selectedAccion = "";
 const Acciones = [];
 
+/**
+ * Guarda y valida los datos ingresados de la persona y hace una cadena para mostrar esconder el login y mostrar la pagina principal
+ */
 export function submitDatos() {
     let nombre = document.querySelector("#nombre").value;
     let apellido = document.querySelector("#apellido").value;
@@ -19,6 +24,10 @@ export function submitDatos() {
     hideLoginScreen();
 }
 
+
+/**
+ * Esconde la pagina de login
+ */
 function hideLoginScreen() {
     let login_container = $("#login-container");
 
@@ -27,6 +36,9 @@ function hideLoginScreen() {
     });
 }
 
+/**
+ * Muestra la página para poder comprar y vender acciones
+ */
 function showPersonInfo() {
     //Primero muestro el welcome title
     let welcome_title = $("#welcome-title");
@@ -45,118 +57,171 @@ function showPersonInfo() {
     actualizarPortfolio();
 }
 
-function actualizarPortfolio(){
+/**
+ * Actualiza el portfolio de la persona modificando sus valores de acciones
+*/
+function actualizarPortfolio() {
     let person_portfolio_pesos = $("#insumos-pesos");
     person_portfolio_pesos.html(`$${persona.dinero}`);
 
     let person_portfolio_acciones = $("#insumos-acciones");
 
-    persona.acciones.map((accion)=>{
+    //Por cada accion de la persona creo un elemento si no existe o cambio el valor si existe
+    persona.acciones.map((accion) => {
         const accion_html = $(`#insumos-acciones-${accion.nombre}`);
-        if (!accion_html.length)
-            person_portfolio_acciones.append(agregarAccion(accion.nombre,accion.cantidad));
+        if (!accion_html.length) person_portfolio_acciones.append(agregarAccion(accion.nombre, accion.cantidad));
         else {
-            accion_html.html(`${accion.cantidad} ${accion.nombre}`)
+            accion_html.html(`${accion.cantidad} ${accion.nombre}`);
         }
     });
-
-    
 }
 
-function agregarAccion(nombreAccion,cantidad){
-    return `<div class="row"><div class="col-md-6"></div><div class="col-md-6"><p id="insumos-acciones-${nombreAccion}">${cantidad} ${nombreAccion}</p></div></div>`
+/**
+ * Agrega un elemento de accion dado la cantidad comprada y el nombre si no existe
+ * @param {string} nombreAccion Nombre de la accion a crear
+ * @param {Number} cantidad Cantidad de la accion a asignar
+ * @returns HTML como string
+ */
+function agregarAccion(nombreAccion, cantidad) {
+    return `<div class="row"><div class="col-md-6"></div><div class="col-md-6"><p id="insumos-acciones-${nombreAccion}">${cantidad} ${nombreAccion}</p></div></div>`;
 }
 
+
+/**
+ * Valida los datos de una persona
+ * @param {string} nombre Nombre de la persona
+ * @param {string} apellido Apellido de la persona
+ * @param {Number} edad Edad de la persona > 0
+ * @param {Number} dinero Dinero de la persona > 0
+ * @returns Bool representando si son validos o no
+ */
 function datosPersonaValidos(nombre, apellido, edad, dinero) {
-    var error = "";
-    if (nombre == "" || apellido == "" || edad == "" || dinero == "") error = "Por favor complete los siguientes datos:\n";
+    let error = "";
+    let hasError = false;
+    if (nombre == "" || apellido == "" || edad == "" || dinero == "") hasError = true;
 
-    if (nombre == "") error += "\tNombre\n";
-    if (apellido == "") error += "\tApellido\n";
-    if (edad == "") error += "\tEdad\n";
-    if (dinero == "") error += "\tDinero\n";
+    if(hasError) error = "<p>Por favor complete los siguientes datos:</p><ul>";
+
+    if (nombre == "") error += "<li>Nombre</li>";
+    if (apellido == "") error += "<li>Apellido</li>";
+    if (edad == "") error += "<li>Edad</li>";
+    if (dinero == "") error += "<li>Dinero</li>";
+
+    if(hasError) error += "</ul>";
 
     if (Number.isNaN(edad) || edad <= 0) {
-        error += "Ingrese edad como valor numérico positivo.\n";
+        error += "<p>Ingrese edad como valor numérico positivo.</p>";
     }
 
     if (Number.isNaN(dinero) || dinero <= 0) {
-        error += "Ingrese dinero como valor numérico positivo.";
+        error += "<p>Ingrese dinero como valor numérico positivo</p>";
     }
 
     if (error != "") {
-        alert(error);
+        createModalAndShow("Error",error);
         return false;
     }
     return true;
 }
 
-export function testRegister(){
+
+/**
+ * Funcion de testeo para agilizar la creación de una persona en el login
+ */
+export function testRegister() {
     //Creo la persona
     persona = new Persona("Test", "Person", "23", "10000");
 
     //Al crear la persona, escondo el login screen
     hideLoginScreen();
-    
 }
 
-export function comprarAcciones(){
-    let cantidad = Number(document.querySelector('#comprar-cantidad').value)
-    if(!validaAcciones(cantidad)) return;
+
+/**
+ * Compra accion a la persona que está efectuando la accion una cierta cantidad que pueda
+ */
+export function comprarAcciones() {
+    let cantidad = Number(document.querySelector("#comprar-cantidad").value);
+    if (!validaAcciones(cantidad)) return;
 
     let precio = getPrecioActual();
-    if(Number.isNaN(precio) || precio == undefined){
-        alert("Error de conversión de precio, intente nuevamente.");
+    if (Number.isNaN(precio) || precio == undefined) {
+        createModalAndShow("Error", "<p>Error de conversión de precio, intente nuevamente.</p>");
         return;
-    } 
+    }
 
-    persona.comprarAcciones(precio,cantidad,'FORT');
+    persona.comprarAcciones(precio, cantidad, selectedAccion);
 
     actualizarPortfolio();
 }
 
-export function venderAcciones(){
-    let cantidad = Number(document.querySelector('#vender-cantidad').value)
-    if(!validaAcciones(cantidad)) return;
+/**
+ * Vende accion a la persona que está efectuando la accion una cierta cantidad que pueda 
+*/
+export function venderAcciones() {
+    let cantidad = Number(document.querySelector("#vender-cantidad").value);
+    if (!validaAcciones(cantidad)) return;
 
     let precio = getPrecioActual();
-    if(Number.isNaN(precio) || precio == undefined){
-        alert("Error de conversión de precio, intente nuevamente.");
+    if (Number.isNaN(precio) || precio == undefined) {
+        createModalAndShow("Error", "<p>Error de conversión de precio, intente nuevamente.</p>");
         return;
-    } 
+    }
 
-    persona.venderAcciones(precio,cantidad,'FORT');
+    persona.venderAcciones(precio, cantidad, selectedAccion);
 
     actualizarPortfolio();
 }
 
-function getPrecioActual(){
-    let precio = document.querySelector('#price').innerHTML
-    precio = Number(precio.split('$')[1])
+
+/**
+ * Obtengo el precio actual de la accion seleccionada
+ */
+function getPrecioActual() {
+    let precio = document.querySelector(`#price_${selectedAccion}`).innerHTML;
+    precio = Number(precio.split("$")[1]);
     return precio;
 }
 
-function validaAcciones(cantidad){
+/**
+ * Valida el valor ingresado en cantida que no sea negativo o no sea un numero
+ * @param {Number} cantidad Cantidad a validad
+ * @returns Bool representando si es valida o no
+ */
+function validaAcciones(cantidad) {
     let error = "";
-    if (cantidad == "") error = "Por favor ingrese una cantidad a comprar/vender\n";
+    if (cantidad == "") error = "Por favor ingrese una cantidad a comprar/vender";
 
-    if (Number.isNaN(cantidad) || cantidad <=0) error = "Por favor ingrese una cantidad numérica positiva\n";
+    if (Number.isNaN(cantidad) || cantidad <= 0) error = "Por favor ingrese una cantidad numérica positiva";
 
-    if (error!= "") {
-        alert(error);
+    if (error != "") {
+        createModalAndShow("Error", `<p>${error}</p>`);
         return false;
     }
     return true;
 }
 
-
+//Como es un modulo necesito asignarle estas funciones al DOM
 window.submitDatos = submitDatos;
 window.testRegister = testRegister;
 window.comprarAcciones = comprarAcciones;
 window.venderAcciones = venderAcciones;
 
 window.onload = () => {
-    Acciones.push(new Accion("FORT",'chart-container','token-selector-container',10,200));
-    Acciones.push(new Accion("FART",'chart-container','token-selector-container',3000,5000));
-    Acciones.push(new Accion("POTAT",'chart-container','token-selector-container',2,5));
+    // Agrego un callback que se ejecuta al cambiar de acción, esto me cambia la acción seleccionada
+    $("#acciones-select").change(function () {
+        var data = $(this).val();
+        selectedAccion = data.split("/")[0];
+    });
+
+    // Creo 3 acciones genericas
+    //Puedo crear más acá y de forma automatica se actualiza la pagina (Agrega un chart entre minimo y máximo de valor, agrega un select para comprar o vender la accion
+    //Y tambien agrega un boton para cambiar la visualizacion de las acciones)
+    Acciones.push(new Accion("FORT", "chart-container", "token-selector-container", "acciones-select", 10, 200));
+    Acciones.push(new Accion("FART", "chart-container", "token-selector-container", "acciones-select", 3000, 5000));
+    Acciones.push(new Accion("POTAT", "chart-container", "token-selector-container", "acciones-select", 2, 5));
+    Acciones.push(new Accion("BANAN", "chart-container", "token-selector-container", "acciones-select", 10, 1000));
+
+    //Hago un trigger para guardar la selectedAccion
+    $("#acciones-select").trigger("change");
 };

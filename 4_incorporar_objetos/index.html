@@ -5,9 +5,10 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Document</title>
-        <link href="./bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
-        <script src="./bootstrap.min.js"></script>
         <script src="./jquery.min.js"></script>
+        <link href="./bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
+        <script src="./popper.min.js"></script>
+        <script src="./bootstrap.min.js"></script>
         <link rel="stylesheet" href="style.css" />
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
         <script type="module" src="./app.js"></script>
@@ -20,7 +21,7 @@
                     <div class="col col-lg-6">
                         <div class="card" id="login-container">
                             <div class="card-header">
-                                <h3>Simluador de acciones FORT/Peso</h3>
+                                <h3>Simluador de acciones</h3>
                             </div>
                             <article class="card-body">
                                 <h4 class="card-title mb-4 mt-1">Registrate</h4>
@@ -74,6 +75,11 @@
                                                 <input id="vender-cantidad" class="form-control" type="text" placeholder="Vender" />
                                                 <!-- input-group -->
                                             </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="acciones-select">Acción a intercambiar</label>
+                                            <select class="form-control" id="acciones-select">
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="card">
