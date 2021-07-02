@@ -15,7 +15,7 @@
     </head>
     <body>
         <main>
-            <button style="position: fixed; top: 0; left: 0" onclick="testRegister()">Test</button>
+            <button id="test-register" style="position: fixed; top: 0; left: 0">Test</button>
             <div class="container">
                 <div class="row justify-content-md-center mt-3">
                     <div class="col col-lg-6">
@@ -41,7 +41,7 @@
                                     <label for="dinero">Dinero en cuenta</label>
                                     <input id="dinero" class="form-control" type="text" placeholder="Monto a agregar" />
                                 </div>
-                                <button class="btn btn-primary btn-block" onclick="submitDatos()">Registrarse</button>
+                                <button id="register-btn" class="btn btn-primary btn-block">Registrarse</button>
                             </article>
                         </div>
                         <div class="card fade custom-hide" id="person-container">
@@ -54,7 +54,7 @@
                                             <label for="comprar-cantidad">Cantidad a comprar</label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
-                                                    <button class="btn btn-success btn__100px" onclick="comprarAcciones()">Comprar</button>
+                                                    <button id="buy-accion-btn" class="btn btn-success btn__100px">Comprar</button>
                                                 </div>
                                                 <input id="comprar-cantidad" class="form-control" type="text" placeholder="Comprar" />
                                                 <!-- input-group -->
@@ -65,9 +65,9 @@
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <button
+                                                        id="sell-accion-btn"
                                                         class="btn btn-danger btn__100px"
                                                         style="width: 100px"
-                                                        onclick="venderAcciones()"
                                                     >
                                                         Vender
                                                     </button>

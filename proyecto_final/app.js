@@ -201,11 +201,11 @@ function validaAcciones(cantidad) {
     return true;
 }
 
-//Como es un modulo necesito asignarle estas funciones al DOM
-window.submitDatos = submitDatos;
-window.testRegister = testRegister;
-window.comprarAcciones = comprarAcciones;
-window.venderAcciones = venderAcciones;
+// Como es un modulo necesito asignarle estas funciones al DOM, En este caso no es necesario porque manejo todo desde el windows on load
+// window.submitDatos = submitDatos;
+// window.testRegister = testRegister;
+// window.comprarAcciones = comprarAcciones;
+// window.venderAcciones = venderAcciones;
 
 window.onload = () => {
     // Agrego un callback que se ejecuta al cambiar de acción, esto me cambia la acción seleccionada
@@ -214,14 +214,20 @@ window.onload = () => {
         selectedAccion = data.split("/")[0];
     });
 
+        // Asignación de callbacks en botones
+    $('#test-register').on("click",testRegister);
+    $('#buy-accion-btn').on('click',comprarAcciones);
+    $('#sell-accion-btn').on('click',venderAcciones);
+    $('#register-btn').on('click',submitDatos);
+
     // Creo 3 acciones genericas
-    //Puedo crear más acá y de forma automatica se actualiza la pagina (Agrega un chart entre minimo y máximo de valor, agrega un select para comprar o vender la accion
-    //Y tambien agrega un boton para cambiar la visualizacion de las acciones)
+    // Puedo crear más acá y de forma automatica se actualiza la pagina (Agrega un chart entre minimo y máximo de valor, agrega un select para comprar o vender la accion
+    // Y tambien agrega un boton para cambiar la visualizacion de las acciones)
     Acciones.push(new Accion("FORT", "chart-container", "token-selector-container", "acciones-select", 10, 200));
     Acciones.push(new Accion("FART", "chart-container", "token-selector-container", "acciones-select", 3000, 5000));
     Acciones.push(new Accion("POTAT", "chart-container", "token-selector-container", "acciones-select", 2, 5));
     Acciones.push(new Accion("BANAN", "chart-container", "token-selector-container", "acciones-select", 10, 1000));
 
-    //Hago un trigger para guardar la selectedAccion
+    // Hago un trigger para guardar la selectedAccion
     $("#acciones-select").trigger("change");
 };
