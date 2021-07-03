@@ -10,10 +10,10 @@ const Acciones = [];
  * Guarda y valida los datos ingresados de la persona y hace una cadena para mostrar esconder el login y mostrar la pagina principal
  */
 export function submitDatos() {
-    let nombre = document.querySelector("#nombre").value;
-    let apellido = document.querySelector("#apellido").value;
-    let edad = Number(document.querySelector("#edad").value);
-    let dinero = Number(document.querySelector("#dinero").value);
+    let nombre = $("#nombre").val();
+    let apellido = $("#apellido").val();
+    let edad = Number($("#edad").val());
+    let dinero = Number($("#dinero").val());
 
     if (!datosPersonaValidos(nombre, apellido, edad, dinero)) return;
 
@@ -22,18 +22,25 @@ export function submitDatos() {
 
     //Al crear la persona, escondo el login screen
     hideLoginScreen();
+    savePersona(persona);
 }
 
 
 /**
  * Esconde la pagina de login
  */
-function hideLoginScreen() {
+function hideLoginScreen(fade=true) {
     let login_container = $("#login-container");
 
-    login_container.fadeOut("slow", () => {
+    if(fade){
+        login_container.fadeOut("slow", () => {
+            showPersonInfo();
+        });
+    }
+    else{
+        login_container.hide();
         showPersonInfo();
-    });
+    }
 }
 
 /**
@@ -134,6 +141,7 @@ export function testRegister() {
 
     //Al crear la persona, escondo el login screen
     hideLoginScreen();
+    savePersona(persona);
 }
 
 
@@ -153,6 +161,7 @@ export function comprarAcciones() {
     persona.comprarAcciones(precio, cantidad, selectedAccion);
 
     actualizarPortfolio();
+    savePersona(persona);
 }
 
 /**
@@ -171,6 +180,7 @@ export function venderAcciones() {
     persona.venderAcciones(precio, cantidad, selectedAccion);
 
     actualizarPortfolio();
+    savePersona(persona);
 }
 
 
@@ -201,13 +211,33 @@ function validaAcciones(cantidad) {
     return true;
 }
 
-// Como es un modulo necesito asignarle estas funciones al DOM, En este caso no es necesario porque manejo todo desde el windows on load
-// window.submitDatos = submitDatos;
-// window.testRegister = testRegister;
-// window.comprarAcciones = comprarAcciones;
-// window.venderAcciones = venderAcciones;
+/**
+ * Guarda una persona en el local storage
+ * @param {Persona} persona 
+ */
+function savePersona(persona){
+    localStorage.setItem('persona',JSON.stringify(persona));
+}
 
-window.onload = () => {
+/**
+ * Carga la persona del local storage y le actualiza el portfolio en el frontend
+ */
+function loadLastPersona(){
+    //Si no hay persona me voy
+    if(localStorage.getItem('persona') == null) return null;
+    
+    persona = JSON.parse(localStorage.getItem('persona'));
+    hideLoginScreen(false);
+    actualizarPortfolio();
+}
+
+function clearPersonaLocalStorage(){
+    localStorage.removeItem('persona');
+    location.reload();
+}
+
+//Shorhand de Document ready
+$(() => {
     // Agrego un callback que se ejecuta al cambiar de acción, esto me cambia la acción seleccionada
     $("#acciones-select").change(function () {
         var data = $(this).val();
@@ -219,6 +249,7 @@ window.onload = () => {
     $('#buy-accion-btn').on('click',comprarAcciones);
     $('#sell-accion-btn').on('click',venderAcciones);
     $('#register-btn').on('click',submitDatos);
+    $('#logout').on('click',clearPersonaLocalStorage);
 
     // Creo 3 acciones genericas
     // Puedo crear más acá y de forma automatica se actualiza la pagina (Agrega un chart entre minimo y máximo de valor, agrega un select para comprar o vender la accion
@@ -230,4 +261,6 @@ window.onload = () => {
 
     // Hago un trigger para guardar la selectedAccion
     $("#acciones-select").trigger("change");
-};
+
+    loadLastPersona();
+});
