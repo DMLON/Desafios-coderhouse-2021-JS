@@ -159,7 +159,7 @@ export function comprarAcciones() {
     }
 
     persona.comprarAcciones(precio, cantidad, selectedAccion);
-
+    
     actualizarPortfolio();
     savePersona(persona);
 }
@@ -226,7 +226,9 @@ function loadLastPersona(){
     //Si no hay persona me voy
     if(localStorage.getItem('persona') == null) return null;
     
-    persona = JSON.parse(localStorage.getItem('persona'));
+    let persona_json = JSON.parse(localStorage.getItem('persona'));
+    persona = new Persona(persona_json.nombre, persona_json.apellido, persona_json.edad, persona_json.dinero);
+    persona.acciones = persona_json.acciones
     hideLoginScreen(false);
     actualizarPortfolio();
 }
@@ -254,13 +256,16 @@ $(() => {
     // Creo 3 acciones genericas
     // Puedo crear más acá y de forma automatica se actualiza la pagina (Agrega un chart entre minimo y máximo de valor, agrega un select para comprar o vender la accion
     // Y tambien agrega un boton para cambiar la visualizacion de las acciones)
-    Acciones.push(new Accion("FORT", "chart-container", "token-selector-container", "acciones-select", 10, 200));
-    Acciones.push(new Accion("FART", "chart-container", "token-selector-container", "acciones-select", 3000, 5000));
-    Acciones.push(new Accion("POTAT", "chart-container", "token-selector-container", "acciones-select", 2, 5));
-    Acciones.push(new Accion("BANAN", "chart-container", "token-selector-container", "acciones-select", 10, 1000));
+    $.getJSON( "./accciones.json", function( data ) {
+        var items = [];
+        $.each( data, function( key, val ) {
+            Acciones.push(new Accion(key, val.chart_container, val.token_selector_container, val.option_container, val.min_val, val.max_val));
+        });
+        $("#acciones-select").trigger("change");
+      });
 
     // Hago un trigger para guardar la selectedAccion
-    $("#acciones-select").trigger("change");
+    
 
     loadLastPersona();
 });

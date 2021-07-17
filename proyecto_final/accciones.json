@@ -1,0 +1,30 @@
+{
+    "FORT":{
+        "chart_container":"chart-container",
+        "token_selector_container":"token-selector-container", 
+        "option_container":"acciones-select", 
+        "min_val":10, 
+        "max_val":200
+    },
+    "FART":{
+        "chart_container":"chart-container",
+        "token_selector_container":"token-selector-container", 
+        "option_container":"acciones-select", 
+        "min_val":3000, 
+        "max_val":5000
+    },
+    "POTAT":{
+        "chart_container":"chart-container",
+        "token_selector_container":"token-selector-container", 
+        "option_container":"acciones-select", 
+        "min_val":2, 
+        "max_val":5
+    },
+    "BANAN":{
+        "chart_container":"chart-container",
+        "token_selector_container":"token-selector-container", 
+        "option_container":"acciones-select", 
+        "min_val":10, 
+        "max_val":20
+    } 
+}
