@@ -29,3 +29,9 @@
 .btn__token{
     z-index: 1;
 }
+
+/* #logout-btn{
+    position: fixed;
+    top: 0; 
+    left: 0;
+} */

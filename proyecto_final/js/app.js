@@ -256,13 +256,14 @@ $(() => {
     // Creo 3 acciones genericas
     // Puedo crear más acá y de forma automatica se actualiza la pagina (Agrega un chart entre minimo y máximo de valor, agrega un select para comprar o vender la accion
     // Y tambien agrega un boton para cambiar la visualizacion de las acciones)
-    $.getJSON( "./accciones.json", function( data ) {
-        var items = [];
-        $.each( data, function( key, val ) {
-            Acciones.push(new Accion(key, val.chart_container, val.token_selector_container, val.option_container, val.min_val, val.max_val));
+    $.getJSON("./db/accciones.json", function (data) {
+        $.each(data, function (key, val) {
+            Acciones.push(
+                new Accion(key, val.chart_container, val.token_selector_container, val.option_container, val.min_val, val.max_val)
+            );
         });
         $("#acciones-select").trigger("change");
-      });
+    });
 
     // Hago un trigger para guardar la selectedAccion
     
